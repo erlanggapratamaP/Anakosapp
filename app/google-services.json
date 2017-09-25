@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "951908295252",
+    "firebase_url": "https://anakos-ed4b7.firebaseio.com",
+    "project_id": "anakos-ed4b7",
+    "storage_bucket": "anakos-ed4b7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951908295252:android:48383cd76e43c315",
+        "android_client_info": {
+          "package_name": "com.example.erlangga.anakosapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951908295252-760u45n8mh088blfcis32l96bpc019vr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHS3eCMwRSGKZMAAiHqIT12HQr7KREYjM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
