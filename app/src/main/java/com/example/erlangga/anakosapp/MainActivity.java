@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity  {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+            switch(item.getItemId()) {
                 case R.id.navigation_maps:
                     changeFragment(new MapsFragment());
                     return true;

@@ -95,23 +95,6 @@ public class MapsFragment extends Fragment {
                 googleMap = mMap;
 
 
-                PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                        getActivity().getFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
-                autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-                    @Override
-                    public void onPlaceSelected(Place place) {
-                        // TODO: Get info about the selected place.
-                        Log.i(TAG, "Place: " + place.getName());
-                    }
-
-                    @Override
-                    public void onError(Status status) {
-                        // TODO: Handle the error.
-                        Log.i(TAG, "An error occurred: " + status);
-                    }
-                });
-
 
                 // For dropping a marker at a point on the Map
                 LatLng sydney = new LatLng(-34, 151);
@@ -151,11 +134,7 @@ public class MapsFragment extends Fragment {
         mMapView.onLowMemory();
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
 
-    }
 }
 
 
