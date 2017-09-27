@@ -20,5 +20,6 @@
     <string name="two">TWO</string>
 
     <string name="title_maps">Maps</string>
+    <string name="title_dashboard">Dashboard</string>
     <string name="title_profile">Profile</string>
 </resources>

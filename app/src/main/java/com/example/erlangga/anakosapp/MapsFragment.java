@@ -1,57 +1,37 @@
-package com.example.erlangga.anakosapp.tab;
+package com.example.erlangga.anakosapp;
 
 import android.Manifest;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.erlangga.anakosapp.DetailKosActivity;
-import com.example.erlangga.anakosapp.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 
 
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.Logger;
-
-import static android.content.ContentValues.TAG;
 
 
 public class MapsFragment extends Fragment implements
@@ -60,6 +40,7 @@ GoogleApiClient.OnConnectionFailedListener,
 LocationListener{
 
     private static final int MY_LOCATION_REQUEST_CODE = 99;
+    final static int REQUEST_LOCATION = 199;
     public static String TAG = "ACTIVITY_MAPS";
     MapView mMapView;
     private GoogleMap googleMap;
@@ -67,10 +48,16 @@ LocationListener{
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
+    Marker KosLk, KosPrmpn;
 
 
     public static MapsFragment newInstance(){
-        return new MapsFragment();
+        MapsFragment fragment = new MapsFragment();
+        return fragment;
+
+    }
+
+    public MapsFragment(){
 
     }
 
@@ -116,12 +103,34 @@ LocationListener{
 
 
                 // For dropping a marker at a point on the Map
-                LatLng sydney = new LatLng(-34, 151);
-                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
+              //  LatLng sydney = new LatLng(-34, 151);
+                //googleMap.addMarker(new MarkerOptions().position(sydney).title("Kos Laki-Laki").snippet("Marker Description"));
+
+                //kos laki-laki dan perempuan
+                LatLng pwt = new LatLng(-7.431391, 109.247833);
+                googleMap.addMarker(new MarkerOptions().position(pwt).title("Warala kos"). snippet("Klik untuk lebih lanjut") .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
+                LatLng magentaKos = new LatLng(-7.431391, 109.244454);
+                googleMap.addMarker(new MarkerOptions().position(magentaKos).title("Magenta kos"). snippet("Klik untuk lebih lanjut") .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+                googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        if(marker.getTitle().equals("Warala kos")){
+                            Intent i = new Intent(getActivity(), DetailKosActivity.class);
+                            getActivity().startActivity(i);
+
+                        }else if(marker.getTitle().equals("Magenta kos")){
+                            Intent i = new Intent(getActivity(), DetailKosActivity.class);
+                            getActivity().startActivity(i);
+
+                        }
+                    }
+                });
+
 
                 // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+               // CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
+                //googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
 
 
@@ -203,7 +212,7 @@ LocationListener{
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         mCurrLocationMarker = googleMap.addMarker(markerOptions);
 
         //move map camera
@@ -218,36 +227,7 @@ LocationListener{
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-    public boolean checkLocationPermission(){
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
 
-            // Asking user if explanation is needed
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-                //Prompt the user once explanation has been shown
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION);
-
-
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION);
-            }
-            return false;
-        } else {
-            return true;
-        }
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
